@@ -1,17 +1,24 @@
 from contextlib import asynccontextmanager
-import os
 import dotenv
 from fastapi import FastAPI
+from app.middleware.auth import init_auth_dependency
+from app.api.health import router as health_router
 from app.middleware.request_context import RequestContextMiddleware
+from app.models.settings import load_settings
+from app.service.jwks_service import JwksService
+from app.service.jwt_service import JwtService
 
 dotenv.load_dotenv()
 
-KEYCLOAK_ISSUER_URL = os.getenv("KEYCLOAK_ISSUER_URL", "")
-KEYCLOAK_AUDIENCE = os.getenv("KEYCLOAK_AUDIENCE", "")
+settings = load_settings()
+
+jwks_service = JwksService(settings.KEYCLOAK_ISSUER_URL)
+jwt_service = JwtService(jwks_service, settings.KEYCLOAK_ISSUER_URL, settings.KEYCLOAK_AUDIENCE)
+init_auth_dependency(jwt_service)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(_app: FastAPI):
     yield
 
 
@@ -19,12 +26,4 @@ app = FastAPI(title="DLS API Gateway", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(RequestContextMiddleware)
 
-
-@app.get("/healthy")
-def health_check():
-    return {"status": "Healthy"}
-
-
-@app.get("/ready")
-def readiness_check():
-    return {"status": "Ready"}
+app.include_router(health_router)
