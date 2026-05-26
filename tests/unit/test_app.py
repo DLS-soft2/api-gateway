@@ -22,9 +22,9 @@ def test_health_endpoints_require_no_auth():
         assert response.status_code == 200
 
 
-def test_unknown_route_returns_404():
+def test_unknown_route_without_auth_returns_401():
     response = client.get("/nonexistent")
-    assert response.status_code == 404
+    assert response.status_code == 401
 
 
 def test_request_id_header_on_health():
