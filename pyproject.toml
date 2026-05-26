@@ -35,6 +35,10 @@ min-public-methods = 1
 [tool.pylint.format]
 max-line-length = 100
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--ignore=tests/integration"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
