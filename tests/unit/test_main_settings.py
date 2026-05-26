@@ -30,12 +30,14 @@ def test_settings_fails_without_keycloak_audience(monkeypatch):
         GatewaySettings()
 
 
-def test_settings_fails_without_user_service_url(monkeypatch):
+def test_service_url_defaults_to_empty(monkeypatch):
     monkeypatch.setenv("KEYCLOAK_ISSUER_URL", "http://kc:8080/realms/test")
     monkeypatch.setenv("KEYCLOAK_AUDIENCE", "aud")
     monkeypatch.delenv("USER_SERVICE_BASE_URL", raising=False)
-    with pytest.raises(ValidationError):
-        GatewaySettings()
+    monkeypatch.delenv("ORDER_SERVICE_BASE_URL", raising=False)
+    s = GatewaySettings()
+    assert s.USER_SERVICE_BASE_URL == ""
+    assert s.ORDER_SERVICE_BASE_URL == ""
 
 
 def test_settings_custom_timeout(monkeypatch):
