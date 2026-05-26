@@ -29,7 +29,7 @@ async def lifespan(_app: FastAPI):
         yield
 
 
-app = FastAPI(title="DLS API Gateway", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="DLS API Gateway", version="1.0.1", lifespan=lifespan)
 
 app.add_middleware(RequestContextMiddleware)
 
