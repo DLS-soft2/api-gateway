@@ -23,8 +23,17 @@ pylint = "^3.3.1"
 httpx = "^0.28.1"
 pytest-asyncio = "^1.4.0"
 
+[tool.pylint.main]
+ignore-paths = ["tests/"]
+
 [tool.pylint.messages_control]
 disable = ["C0114", "C0115", "C0116"]
+
+[tool.pylint.design]
+min-public-methods = 1
+
+[tool.pylint.format]
+max-line-length = 100
 
 [build-system]
 requires = ["poetry-core"]
