@@ -10,6 +10,7 @@ class RouteConfig(BaseModel):
 
 class GatewaySettings(BaseSettings):
     KEYCLOAK_ISSUER_URL: str
+    KEYCLOAK_JWKS_ISSUER_URL: str = ""
     KEYCLOAK_AUDIENCE: str
     PROXY_TIMEOUT_SECONDS: float = 30.0
 

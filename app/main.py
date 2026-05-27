@@ -16,7 +16,8 @@ dotenv.load_dotenv()
 
 settings = load_settings()
 
-jwks_service = JwksService(settings.KEYCLOAK_ISSUER_URL)
+jwks_url = settings.KEYCLOAK_JWKS_ISSUER_URL or settings.KEYCLOAK_ISSUER_URL
+jwks_service = JwksService(jwks_url)
 jwt_service = JwtService(jwks_service, settings.KEYCLOAK_ISSUER_URL, settings.KEYCLOAK_AUDIENCE)
 init_auth_dependency(jwt_service)
 
