@@ -55,7 +55,8 @@ Default routes are built in for all services:
 |--------|--------|
 | `/api/v1/orders` | `ORDER_SERVICE_BASE_URL` |
 | `/api/v1/restaurants` | `RESTAURANT_SERVICE_BASE_URL` |
-| `/api/v1/couriers` | `COURIER_SERVICE_BASE_URL` |
+| `/api/v2/couriers` | `COURIER_SERVICE_BASE_URL` |
+| `/api/v2/deliveries` | `COURIER_SERVICE_BASE_URL` |
 | `/api/v1/payments` | `PAYMENT_SERVICE_BASE_URL` |
 | `/api/v1/notifications` | `NOTIFICATION_SERVICE_BASE_URL` |
 | `/api/v1/users` | `USER_SERVICE_BASE_URL` |
