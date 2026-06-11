@@ -4,7 +4,7 @@ from app.models.auth import UserInfo
 from app.models.settings import GatewaySettings, RouteConfig
 from app.service.proxy_service import ProxyService
 
-SPOOFABLE_HEADERS = {"x-user-id", "x-user-roles", "x-user-email"}
+SPOOFABLE_HEADERS = {"x-user-id", "x-user-roles", "x-user-email", "origin"}
 
 router = APIRouter()
 
