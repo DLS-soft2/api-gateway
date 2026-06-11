@@ -33,7 +33,12 @@ def _resolve_route(path: str, routes: list[RouteConfig]) -> RouteConfig | None:
 def _build_target_url(path: str, route: RouteConfig, settings: GatewaySettings) -> str:
     """Construct the full downstream URL from route config and settings."""
     base_url = getattr(settings, route.target_env_key)
-    forwarded_path = path[len(route.prefix):] if route.strip_prefix else path
+    if route.rewrite_to is not None:
+        forwarded_path = route.rewrite_to + path[len(route.prefix):]
+    elif route.strip_prefix:
+        forwarded_path = path[len(route.prefix):]
+    else:
+        forwarded_path = path
     return f"{base_url.rstrip('/')}{forwarded_path}"
 
 

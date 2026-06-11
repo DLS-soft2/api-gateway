@@ -6,6 +6,7 @@ class RouteConfig(BaseModel):
     prefix: str
     target_env_key: str
     strip_prefix: bool = False
+    rewrite_to: str | None = None
 
 
 class GatewaySettings(BaseSettings):
@@ -29,6 +30,11 @@ class GatewaySettings(BaseSettings):
         RouteConfig(prefix="/api/v1/payments", target_env_key="PAYMENT_SERVICE_BASE_URL"),
         RouteConfig(prefix="/api/v1/notifications", target_env_key="NOTIFICATION_SERVICE_BASE_URL"),
         RouteConfig(prefix="/api/v1/users", target_env_key="USER_SERVICE_BASE_URL"),
+        RouteConfig(
+            prefix="/restaurant-graphql",
+            target_env_key="RESTAURANT_SERVICE_BASE_URL",
+            rewrite_to="/graphql",
+        ),
         RouteConfig(prefix="/graphql", target_env_key="USER_SERVICE_BASE_URL"),
     ]
 

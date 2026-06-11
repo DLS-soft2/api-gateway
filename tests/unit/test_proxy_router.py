@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from app.api.proxy import (
     init_proxy_router,
     router as proxy_router,
+    _build_target_url,
     _resolve_route,
 )
 from app.middleware.auth import require_auth
@@ -54,6 +55,54 @@ def _build_test_app(
     test_app.include_router(proxy_router)
 
     return test_app, mock_forward
+
+
+def _build_test_settings() -> GatewaySettings:
+    """Settings instance for direct _build_target_url tests."""
+    return GatewaySettings(
+        KEYCLOAK_ISSUER_URL="http://kc:8080/realms/dls",
+        KEYCLOAK_AUDIENCE="dls-gateway",
+        RESTAURANT_SERVICE_BASE_URL="http://restaurant-svc:8000",
+    )
+
+
+def test_build_target_url_rewrite():
+    route = RouteConfig(
+        prefix="/restaurant-graphql",
+        target_env_key="RESTAURANT_SERVICE_BASE_URL",
+        rewrite_to="/graphql",
+    )
+    url = _build_target_url("/restaurant-graphql", route, _build_test_settings())
+    assert url == "http://restaurant-svc:8000/graphql"
+
+
+def test_build_target_url_rewrite_preserves_remainder():
+    route = RouteConfig(
+        prefix="/restaurant-graphql",
+        target_env_key="RESTAURANT_SERVICE_BASE_URL",
+        rewrite_to="/graphql",
+    )
+    url = _build_target_url("/restaurant-graphql/something", route, _build_test_settings())
+    assert url == "http://restaurant-svc:8000/graphql/something"
+
+
+def test_build_target_url_without_rewrite_strips_prefix():
+    route = RouteConfig(
+        prefix="/api/v2/restaurants",
+        target_env_key="RESTAURANT_SERVICE_BASE_URL",
+        strip_prefix=True,
+    )
+    url = _build_target_url("/api/v2/restaurants/123", route, _build_test_settings())
+    assert url == "http://restaurant-svc:8000/123"
+
+
+def test_build_target_url_without_rewrite_passthrough():
+    route = RouteConfig(
+        prefix="/api/v2/restaurants",
+        target_env_key="RESTAURANT_SERVICE_BASE_URL",
+    )
+    url = _build_target_url("/api/v2/restaurants/123", route, _build_test_settings())
+    assert url == "http://restaurant-svc:8000/api/v2/restaurants/123"
 
 
 def test_route_matching_hit():
