@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 import dotenv
 import httpx
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 from app.api.health import router as health_router
 from app.api.proxy import init_proxy_router
 from app.api.proxy import router as proxy_router
@@ -31,6 +32,7 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title="DLS API Gateway", version="1.0.1", lifespan=lifespan)
+Instrumentator().instrument(app).expose(app)
 
 app.add_middleware(RequestContextMiddleware)
 

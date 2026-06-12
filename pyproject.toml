@@ -16,6 +16,7 @@ python-dotenv = "^1.2.1"
 uvicorn = { extras = ["standard"], version = "^0.32.0" }
 PyJWT = { extras = ["crypto"], version = "^2.10.0" }
 httpx = "^0.28.1"
+prometheus-fastapi-instrumentator = "^7.1.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
