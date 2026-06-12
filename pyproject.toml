@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "api-gateway"
-version = "1.0.5"
+version = "1.0.6"
 description = "A FastAPI project template managed with Poetry"
 authors = ["Benjamin Harris <Benjamin@aintgivinnomailyo.com>"]
 license = ""

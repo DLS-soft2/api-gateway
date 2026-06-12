@@ -29,6 +29,7 @@ class GatewaySettings(BaseSettings):
         RouteConfig(prefix="/api/v2/deliveries", target_env_key="COURIER_SERVICE_BASE_URL"),
         RouteConfig(prefix="/api/v1/payments", target_env_key="PAYMENT_SERVICE_BASE_URL"),
         RouteConfig(prefix="/api/v1/notifications", target_env_key="NOTIFICATION_SERVICE_BASE_URL"),
+        RouteConfig(prefix="/api/v1/receipts", target_env_key="NOTIFICATION_SERVICE_BASE_URL"),
         RouteConfig(prefix="/api/v1/users", target_env_key="USER_SERVICE_BASE_URL"),
         RouteConfig(
             prefix="/restaurant-graphql",
